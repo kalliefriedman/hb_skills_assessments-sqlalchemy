@@ -69,33 +69,37 @@ q8 = Model.query.filter(Model.brand_id != 'for').all()
 
 # -------------------------------------------------------------------
 # Part 4: Write Functions
-
-
 def get_model_info(year):
     """Takes in a year and prints out each model name, brand name, and brand
     headquarters for that year using only ONE database query."""
 
+    models_of_year = Model.query.filter_by(year=year).options(db.joinedload('brands')).all()
 
-    pass
+    for model_oy in models_of_year:
+        print model_oy.name, model_oy.brands.name, model_oy.brands.headquarters
 
 
 def get_brands_summary():
     """Prints out each brand name (once) and all of that brand's models,
     including their year, using only ONE database query."""
 
-    pass
+    brands_with_models = Brand.query.options(db.joinedload('models')).all()
+    for brand_wm in brands_with_models:
+        print brand_wm.name
+        models_for_brand = brand_wm.models
+        for model_for_brand in models_for_brand:
+            print model_for_brand.name, model_for_brand.year
 
 
 def search_brands_by_name(mystr):
     """Returns all Brand objects corresponding to brands whose names include
     the given string."""
 
-    pass
+    Brand.query.filter(Brand.name.like('%'+mystr+'%')).all()
 
 
 def get_models_between(start_year, end_year):
     """Returns all Model objects corresponding to models made between
     start_year (inclusive) and end_year (exclusive)."""
 
-    pass
-
+    Model.query.filter(Model.year > start_year, Model.year < end_year).all()
