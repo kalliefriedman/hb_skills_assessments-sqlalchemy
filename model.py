@@ -24,8 +24,7 @@ class Brand(db.Model):
 
     def __repr__(self):
         """Show info about Brands"""
-        return "<brand id=%s name=%s founded=%s headquarters=%s discountinued=%s>" % (self.brand_id,
-                    self.name, self.founded, self.headquarters, self.discontinued)
+        return "<brand id=%s name=%s founded=%s headquarters=%s discountinued=%s>" % (self.brand_id, self.name, self.founded, self.headquarters, self.discontinued)
 
 
 class Model(db.Model):
@@ -39,8 +38,8 @@ class Model(db.Model):
                          nullable=False)
     name = db.Column(db.String(50), nullable=False)
 
-    brands = db.relationship('Brand', backref='models')
-    awards = db.relationship('Award', backref='models')
+    brands = db.relationship("Brand", backref=db.backref("models", order_by=model_id))
+    awards = db.relationship("Award", backref=db.backref("models", order_by=model_id))
 
     def __repr__(self):
         """Show info about Models"""
@@ -58,8 +57,7 @@ class Award(db.Model):
 
     def __repr__(self):
         """Show info about Models"""
-        return "<award id=%s year=%s winner_id=%s name=%s>" % (self.award_id,
-                                        self.year, self.winner_id, self.name)
+        return "<award id=%s year=%s winner_id=%s name=%s>" % (self.award_id, self.year, self.winner_id, self.name)
 
 
 

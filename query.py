@@ -43,10 +43,8 @@ init_app()
 q1 = Brand.query.filter_by(brand_id='ram').one()
 
 # Get all models with the name ``Corvette`` and the brand_id ``che``.
-# q2 = Brand.query.join(Brand.models).filter(Brand.brand_id == 'che').all()
 
-# Brand.query.filter_by(brand_id='che').models.filter_by(model_name='Corvette').all()
-# Brand.query.filter_by(brand_id == 'che').all()
+q2 = Model.query.filter(Model.name == 'Corvette', Model.brand_id == 'che').all()
 
 # Get all models that are older than 1960.
 q3 = Model.query.filter(Model.year < 1960).all()
@@ -58,14 +56,14 @@ q4 = Brand.query.filter(Brand.founded > 1920).all()
 q5 = Model.query.filter(Model.name.like('Cor%')).all()
 
 # Get all brands that were founded in 1903 and that are not yet discontinued.
-# q6 = Brand.query.filter(Brand.founded=1903, Brand.discontinued.is_(None)).all()
+q6 = Brand.query.filter(Brand.founded == 1903, Brand.discontinued.is_(None)).all()
 
 # Get all brands that are either 1) discontinued (at any time) or 2) founded
 # before 1950.
-q7 = None
+q7 = Model.query.filter(db.or_(Brand.founded < 1950, Brand.discontinued is not None)).all()
 
 # Get all models whose brand_id is not ``for``.
-q8 = None
+q8 = Model.query.filter(Model.brand_id != 'for').all()
 
 
 
@@ -76,6 +74,7 @@ q8 = None
 def get_model_info(year):
     """Takes in a year and prints out each model name, brand name, and brand
     headquarters for that year using only ONE database query."""
+
 
     pass
 
